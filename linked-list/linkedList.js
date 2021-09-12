@@ -16,7 +16,7 @@ class LinkedList {
   }
 
   prepend(value) {
-    const newNode = new LinkedListNode(value);
+    const newNode = new LinkedListNode(value, this.head);
     this.head = newNode;
     if (!this.tail) {
       this.tail = newNode;
@@ -48,7 +48,6 @@ class LinkedList {
       return this;
     }
     let currentNode = this.head;
-    let prev = currentNode;
     while (currentNode.next) {
       if (currentNode.next.value === value) {
         if (currentNode.next === this.tail) {

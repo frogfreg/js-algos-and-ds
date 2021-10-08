@@ -42,4 +42,16 @@ export class MinHeap {
   isEmpty() {
     return this.heapContainer.length === 0;
   }
+
+  find(item) {
+    const foundItems = [];
+
+    for (let [index, element] of this.heapContainer.entries()) {
+      if (item === element) {
+        foundItems.push(index);
+      }
+    }
+
+    return foundItems;
+  }
 }

@@ -20,10 +20,10 @@ export class MinHeap {
     return this.heapElements.has(item);
   }
   hasLeftChild(parentIndex) {
-    return this.getLeftChildIndex(parentIndex) > this.heapContainer.length;
+    return this.getLeftChildIndex(parentIndex) < this.heapContainer.length;
   }
   hasRightChild(parentIndex) {
-    return this.getRightChildIndex(parentIndex) > this.heapContainer.length;
+    return this.getRightChildIndex(parentIndex) < this.heapContainer.length;
   }
   leftChild(parentIndex) {
     return this.heapContainer[this.getLeftChildIndex(parentIndex)];
@@ -54,4 +54,97 @@ export class MinHeap {
 
     return foundItems;
   }
+
+  heapifyUp(customStartIndex) {
+    let currentIndex = customStartIndex || this.heapContainer.length - 1;
+
+    while (
+      this.hasParent(currentIndex) &&
+      this.parent(currentIndex) > this.heapContainer[currentIndex]
+    ) {
+      this.swap(currentIndex, this.getParentIndex(currentIndex));
+      currentIndex = this.getParentIndex(currentIndex);
+    }
+  }
+
+  heapifyDown(customStartIndex = 0) {
+    let currentIndex = customStartIndex;
+    let nextIndex = null;
+
+    while (this.hasLeftChild(currentIndex)) {
+      if (
+        this.hasRightChild(currentIndex) &&
+        this.rightChild(currentIndex) <= this.leftChild(currentIndex)
+      ) {
+        nextIndex = this.getRightChildIndex(currentIndex);
+      } else {
+        nextIndex = this.getLeftChildIndex(currentIndex);
+      }
+
+      if (this.heapContainer[currentIndex] <= this.heapContainer[nextIndex]) {
+        break;
+      }
+
+      this.swap(currentIndex, nextIndex);
+      currentIndex = nextIndex;
+    }
+  }
+
+  peek() {
+    if (this.heapContainer.length === 0) {
+      return null;
+    }
+
+    return this.heapContainer[0];
+  }
+
+  poll() {
+    if (this.heapContainer.length === 0) {
+      return null;
+    }
+
+    const firstElement = this.heapContainer[0];
+    this.heapContainer[0] = this.heapContainer[this.heapContainer.length - 1];
+    this.heapContainer.pop();
+    this.heapifyDown();
+
+    return firstElement;
+  }
+  add(data) {
+    this.heapContainer.push(data);
+    this.heapElements.set(data, data);
+    this.heapifyUp();
+
+    return this;
+  }
+  remove(data) {
+    const dataToRemoveIndexes = this.find(data);
+    this.heapElements.delete(data);
+
+    if (dataToRemoveIndexes.length === 0) {
+      return this;
+    }
+
+    for (let index of dataToRemoveIndexes) {
+      this.swap(index, this.heapContainer.length - 1);
+      this.heapContainer.pop();
+      this.heapifyDown(index);
+      this.heapifyUp(index);
+    }
+  }
 }
+
+const bHeap = new MinHeap();
+
+bHeap.add(3);
+bHeap.add(5);
+bHeap.add(6);
+bHeap.add(9);
+bHeap.add(1);
+bHeap.add(0);
+bHeap.remove(0);
+bHeap.add(4);
+bHeap.remove(1);
+bHeap.add(1);
+
+console.log(bHeap.heapContainer);

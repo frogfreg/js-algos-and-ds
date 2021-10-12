@@ -1,4 +1,4 @@
-export function sieve(n) {
+export function sieveOfE(n) {
   const nums = [];
 
   for (let i = 0; i <= n; i++) {
@@ -21,11 +21,11 @@ export function sieve(n) {
 
   for (let i in nums) {
     if (nums[i]) {
-      primes.push(i);
+      primes.push(+i);
     }
   }
 
   return primes;
 }
 
-console.log(sieve(30));
+console.log(sieveOfE(30));

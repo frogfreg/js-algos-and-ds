@@ -42,5 +42,5 @@ function btPowerSet(
   return allSubsets;
 }
 
-console.log(bwPowerSet(["a", "b", "c"]));
+console.log(bwPowerSet(["a", "b", "c", "d"]));
 console.log(btPowerSet(["a", "b", "c"]));

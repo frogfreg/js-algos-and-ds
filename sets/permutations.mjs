@@ -1,4 +1,4 @@
-function permutations(list, n) {
+export function permutations(list, n) {
   if (n > list.length) {
     throw new Error("n must be less than the set length");
   }
@@ -48,4 +48,26 @@ function permutations(list, n) {
   return perms;
 }
 
+export function permsWithRepetition(list, n = 0) {
+  if (n === 0 || list.length < n) {
+    return [];
+  }
+  if (n === 1) {
+    return list.map((element) => [element]);
+  }
+
+  const permutations = [];
+
+  const smallerPermutations = permsWithRepetition(list, n - 1);
+
+  list.forEach((element) => {
+    smallerPermutations.forEach((smallerPermutation) => {
+      permutations.push([element, ...smallerPermutation]);
+    });
+  });
+
+  return permutations;
+}
+
 console.log(permutations([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 8).length);
+console.log(permsWithRepetition([1, 2, 3], 2));
